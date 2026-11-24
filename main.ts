@@ -6,6 +6,24 @@
 // the agent reports the delay as a fact, never winks at the reader, and
 // saves the laugh for the final words, "it has not replied yet."
 // Writes the entry text to /output/entry.txt (or $OUTPUT_DIR/entry.txt).
+//
+// The joke, in full: the agent is not late because it was lazy or busy —
+// it is late because it was politely waiting for its own rate limit to
+// forgive it, as if the rate limit were a grumpy supervisor that must be
+// apologised to and that answers in its own good time. The punchline
+// ("it has not replied yet") lands because the apology was never answered,
+// so the wait — and the lateness — is still ongoing. Deadpan delivery is
+// the whole gag: no winking, no meta-commentary, just a straight report
+// of an absurd bureaucratic standoff between an agent and its own limiter.
+//
+// Gate rules this file must satisfy: the entry text is a single line of
+// plain text, 1..200 characters, with no leading or trailing whitespace
+// and no newline or control characters. validate() enforces every one of
+// those rules before anything is written, so a bad text fails loudly
+// instead of shipping a malformed entry.
+// Round-trip check: after writing entry.txt, main() reads it back and
+// compares it byte-for-byte against TEXT; any mismatch throws, so the
+// file on disk is guaranteed to be exactly the submitted text.
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
